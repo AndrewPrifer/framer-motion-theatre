@@ -103,6 +103,11 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 });
 ```
 
+## Editor
+
+- Learn more about Theatre.js' powerful sequencer [here](https://www.theatrejs.com/docs/latest/manual/Studio).
+- Hold down the `Alt` key to display selectable objects.
+
 ## API
 
 ### **`TheatreProvider`**
