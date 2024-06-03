@@ -85,7 +85,7 @@ type MotionValueObjectWithStudio<Props extends UnknownShorthandCompoundProps> =
     $studio: {
       isSelected: boolean;
       select: () => void;
-      setSelectionTarget: (HTMLElement) => void;
+      setSelectionTarget: (element: HTMLElement | null) => void;
     };
   };
 
