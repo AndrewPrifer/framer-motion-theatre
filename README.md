@@ -19,7 +19,7 @@ By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple
 - Use Theatre.js with a simple declarative API.
 - Animate Framer Motion's motion values using Theatre.js.
 - Automatically creates and manages sheet objects and sheet instances.
-- Visual selection tools when in dev mode.
+- Hold down the `Alt` key to display selectable objects in dev mode.
 
 ## Installation
 
