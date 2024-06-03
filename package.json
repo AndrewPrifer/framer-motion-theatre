@@ -1,0 +1,63 @@
+{
+  "name": "framer-motion-theatre",
+  "description": "Seamlessly integrate Theatre.js with Framer Motion and React.",
+  "keywords": [
+    "react",
+    "framer-motion",
+    "animation",
+    "motion",
+    "motion design",
+    "motion graphics",
+    "theatre"
+  ],
+  "license": "MIT",
+  "author": "Andrew Prifer (https://github.com/AndrewPrifer)",
+  "repository": "AndrewPrifer/framer-motion-theatre",
+  "bugs": "https://github.com/AndrewPrifer/framer-motion-theatre/issues",
+  "homepage": "https://github.com/AndrewPrifer/framer-motion-theatre",
+  "version": "3.2.2",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsup"
+  },
+  "peerDependencies": {
+    "@theatre/core": "^0.7.2",
+    "@theatre/studio": "^0.7.2",
+    "framer-motion": "^10.18.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@theatre/core": "0.7.2",
+    "@theatre/studio": "0.7.2",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "framer-motion": "^10.18.0",
+    "leva": "^0.9.35",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
+}
