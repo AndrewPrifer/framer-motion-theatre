@@ -4,6 +4,8 @@ Seamlessly integrate Theatre.js with Framer Motion and React and get the best of
 Animate Framer Motion's motion values using Theatre.js, with all the complex stuff like sheets, objects, animation instancing and wiring taken care of.
 Plus you automatically get visual selection tools when in dev mode.
 
+https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/92b71b1d-0877-4c43-89db-f8761b9f689e
+
 ## Why?
 
 While Theatre.js' concepts can be a bit hard to wrap your head around, its terminology maps surprisingly well to React and Framer Motion concepts.
