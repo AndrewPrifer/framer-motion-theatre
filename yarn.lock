@@ -2310,7 +2310,7 @@ __metadata:
   peerDependencies:
     "@theatre/core": ^0.7.2
     "@theatre/studio": ^0.7.2
-    framer-motion: ^10.18.0
+    framer-motion: ">10"
     react: ^18.0.0
     react-dom: ^18.0.0
   languageName: unknown
