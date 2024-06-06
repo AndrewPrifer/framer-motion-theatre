@@ -38,8 +38,8 @@
     "@theatre/core": "^0.7.2",
     "@theatre/studio": "^0.7.2",
     "framer-motion": ">10",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "18.0.0 - 19.x",
+    "react-dom": "18.0.0 - 19.x"
   },
   "devDependencies": {
     "@theatre/core": "0.7.2",
@@ -52,7 +52,7 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "framer-motion": "^10.18.0",
+    "framer-motion": "^11.2.10",
     "leva": "^0.9.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
