@@ -270,7 +270,9 @@ export function useSheetObject<
     selectionTarget.appendChild(gizmoRoot.domElement);
 
     const oldPosition = selectionTarget.style.position;
-    selectionTarget.style.position = "relative";
+    selectionTarget.style.position = /static|^$/.test(oldPosition)
+      ? "relative"
+      : oldPosition;
 
     return () => {
       try {
