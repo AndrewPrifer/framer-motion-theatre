@@ -15,7 +15,7 @@
   "repository": "AndrewPrifer/framer-motion-theatre",
   "bugs": "https://github.com/AndrewPrifer/framer-motion-theatre/issues",
   "homepage": "https://github.com/AndrewPrifer/framer-motion-theatre",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "files": [
     "dist"
