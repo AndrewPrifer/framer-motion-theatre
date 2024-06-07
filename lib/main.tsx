@@ -11,8 +11,10 @@ import {
   IProject,
   ISheet,
   UnknownShorthandCompoundProps,
+  onChange,
+  createRafDriver,
 } from "@theatre/core";
-import { MotionValue, motionValue } from "framer-motion";
+import { MotionValue, cancelFrame, frame, motionValue } from "framer-motion";
 import type { IStudio } from "@theatre/studio";
 import { createRoot } from "react-dom/client";
 
@@ -22,6 +24,14 @@ type GizmoTheme = {
   width: number;
   fillOpacity: number;
 };
+
+// Theatre provides a way to start and stop the driver on-demand through the start/stop parameters,
+// however it makes it impossible to dispose of the rafDriver because the update loop is now managed by Theatre and we have no way of telling it to stop.
+// It'll also retain the rafDriver object itself forever, causing a memory leak.
+// So we are not using it for now.
+const framerMotionRafDriver = createRafDriver({
+  name: "framer-motion-theatre",
+});
 
 const theatreContext = createContext<{
   project: IProject;
@@ -46,6 +56,16 @@ export const TheatreProvider = ({
     fillOpacity: 0.2,
     width: 3,
   };
+
+  useEffect(() => {
+    const update: Parameters<typeof frame.update>[0] = ({ timestamp }) => {
+      framerMotionRafDriver.tick(timestamp);
+    };
+
+    frame.update(update, true);
+
+    return () => cancelFrame(update);
+  }, []);
 
   return (
     <theatreContext.Provider
@@ -181,14 +201,17 @@ export function useSheetObject<
   }, [object]);
 
   useEffect(() => {
-    // TODO: use frame-motion's frame loop as rafDriver
-    const unsubscribe = object.onValuesChange((values) => {
-      for (const key in values) {
-        if (motionValues[key]) {
-          motionValues[key].set(values[key]);
+    const unsubscribe = onChange(
+      object.props,
+      (values: any) => {
+        for (const key in values) {
+          if (motionValues[key]) {
+            motionValues[key].set(values[key]);
+          }
         }
-      }
-    });
+      },
+      framerMotionRafDriver
+    );
 
     return unsubscribe;
   }, [object, motionValues]);
