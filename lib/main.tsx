@@ -20,6 +20,7 @@ type GizmoTheme = {
   normalColor: string;
   selectedColor: string;
   width: number;
+  fillOpacity: number;
 };
 
 const theatreContext = createContext<{
@@ -42,6 +43,7 @@ export const TheatreProvider = ({
   const defaultGizmoTheme = {
     normalColor: "rgb(173, 173, 173)",
     selectedColor: "rgb(79, 167, 255)",
+    fillOpacity: 0.2,
     width: 3,
   };
 
@@ -332,6 +334,8 @@ function Gizmo({
   isHovered: boolean;
   theme: GizmoTheme;
 }) {
+  const color =
+    isSelected || isHovered ? theme.selectedColor : theme.normalColor;
   return (
     <div
       style={{
@@ -340,8 +344,8 @@ function Gizmo({
         pointerEvents: "none",
         borderWidth: theme.width,
         borderStyle: isSelected ? "solid" : "dashed",
-        borderColor:
-          isSelected || isHovered ? theme.selectedColor : theme.normalColor,
+        borderColor: color,
+        backgroundColor: `rgb(from ${color} r g b / ${theme.fillOpacity})`,
         boxSizing: "border-box",
         zIndex: 1000,
       }}
