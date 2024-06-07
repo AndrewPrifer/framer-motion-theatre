@@ -196,7 +196,7 @@ export function useSheetObject<
   }, [initial, objectId, sheet]);
 
   useEffect(() => {
-    if (!selectionTarget) {
+    if (!selectionTarget || !studio) {
       return;
     }
 
@@ -209,7 +209,7 @@ export function useSheetObject<
       gizmoDiv.remove();
       setGizmoRoot(null);
     };
-  }, [selectionTarget]);
+  }, [selectionTarget, studio]);
 
   useEffect(() => {
     if (!gizmoRoot || !selectionTarget) {
@@ -228,6 +228,10 @@ export function useSheetObject<
   }, [gizmoRoot, gizmoTheme, isHovered, isSelected, selectFn, selectionTarget]);
 
   useEffect(() => {
+    if (!studio) {
+      return;
+    }
+
     const keyDown = (e: KeyboardEvent) => {
       if (e.altKey === true) {
         setIsGizmoActive(true);
@@ -247,7 +251,7 @@ export function useSheetObject<
       document.removeEventListener("keydown", keyDown);
       document.removeEventListener("keyup", keyUp);
     };
-  }, []);
+  }, [studio]);
 
   useEffect(() => {
     if (!isGizmoActive || !gizmoRoot || !selectionTarget) {
@@ -274,7 +278,7 @@ export function useSheetObject<
   }, [isGizmoActive, gizmoRoot, selectionTarget]);
 
   useEffect(() => {
-    if (!selectionTarget) {
+    if (!selectionTarget || !studio) {
       return;
     }
     const onMouseEnter = () => setIsHovered(true);
@@ -288,7 +292,7 @@ export function useSheetObject<
       selectionTarget.removeEventListener("mouseenter", onMouseEnter);
       selectionTarget.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [selectionTarget]);
+  }, [selectionTarget, studio]);
 
   useEffect(() => {
     if (!selectionTarget) {
