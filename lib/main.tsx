@@ -218,7 +218,6 @@ export function useSheetObject<
 
     gizmoRoot.root.render(
       <Gizmo
-        selectionTarget={selectionTarget}
         selectFn={selectFn}
         isSelected={isSelected}
         isHovered={isHovered}
@@ -328,7 +327,6 @@ function Gizmo({
   isHovered,
   theme,
 }: {
-  selectionTarget: HTMLElement;
   selectFn: () => void;
   isSelected: boolean;
   isHovered: boolean;
