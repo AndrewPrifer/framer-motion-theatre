@@ -216,11 +216,6 @@ export function useSheetObject<
       return;
     }
 
-    if (isGizmoActive) {
-      // ensure gizmoe root is appended to the selection target
-      selectionTarget.appendChild(gizmoRoot.domElement);
-    }
-
     gizmoRoot.root.render(
       <Gizmo
         selectionTarget={selectionTarget}
@@ -230,15 +225,7 @@ export function useSheetObject<
         theme={gizmoTheme}
       />
     );
-  }, [
-    gizmoRoot,
-    gizmoTheme,
-    isGizmoActive,
-    isHovered,
-    isSelected,
-    selectFn,
-    selectionTarget,
-  ]);
+  }, [gizmoRoot, gizmoTheme, isHovered, isSelected, selectFn, selectionTarget]);
 
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {
