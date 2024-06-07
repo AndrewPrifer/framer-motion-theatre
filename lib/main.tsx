@@ -327,6 +327,7 @@ export function useSheetObject<
       if (isGizmoActive) {
         e.stopPropagation();
         selectFn();
+        studio?.ui.restore();
       }
     };
 
