@@ -76,6 +76,12 @@ export const TheatreProvider = ({
   );
 };
 
+export function useTheatre() {
+  const { project, studio } = useContext(theatreContext);
+
+  return { project, studio };
+}
+
 const theatreComponentContext = createContext<{
   sheet: ISheet;
 }>(null!);
