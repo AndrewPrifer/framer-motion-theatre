@@ -319,7 +319,7 @@ export function useSheetObject<
   }, [selectionTarget, studio]);
 
   useEffect(() => {
-    if (!selectionTarget) {
+    if (!selectionTarget || !studio) {
       return;
     }
 
@@ -336,7 +336,7 @@ export function useSheetObject<
     return () => {
       selectionTarget.removeEventListener("click", onClick);
     };
-  });
+  }, [isGizmoActive, selectFn, selectionTarget, studio]);
 
   return motionValuesWithStudio;
 }
