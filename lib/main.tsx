@@ -15,7 +15,7 @@ import {
   createRafDriver,
 } from "@theatre/core";
 import { MotionValue, cancelFrame, frame, motionValue } from "framer-motion";
-import type { IStudio } from "@theatre/studio";
+import studio, { IStudio } from "@theatre/studio";
 
 type GizmoTheme = {
   normalColor: string;
@@ -40,12 +40,12 @@ const theatreContext = createContext<{
 
 export const TheatreProvider = ({
   project,
-  studio,
+  studio: userStudio,
   children,
   theme,
 }: {
   project: IProject;
-  studio?: IStudio;
+  studio?: IStudio | "auto" | false;
   children: ReactNode;
   theme?: GizmoTheme;
 }) => {
@@ -66,9 +66,28 @@ export const TheatreProvider = ({
     return () => cancelFrame(update);
   }, []);
 
+  const actualStudio = useMemo(() => {
+    if (userStudio !== "auto" && userStudio) {
+      return userStudio;
+    }
+
+    // Vite/Rollup is smart enough to tree-shake this, but not `if (userStudio === "auto" && process.env.NODE_ENV === "development") { ... }`
+    // @ts-ignore
+    if (process.env.NODE_ENV === "development") {
+      if (userStudio === "auto") {
+        studio.initialize();
+        return studio;
+      }
+    }
+  }, [userStudio]);
+
   return (
     <theatreContext.Provider
-      value={{ project, studio, gizmoTheme: theme ?? defaultGizmoTheme }}
+      value={{
+        project,
+        studio: actualStudio,
+        gizmoTheme: theme ?? defaultGizmoTheme,
+      }}
     >
       {children}
     </theatreContext.Provider>

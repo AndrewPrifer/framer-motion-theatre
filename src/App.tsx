@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { getProject, types } from "@theatre/core";
-import studio, { IStudio } from "@theatre/studio";
 import {
   TheatreProvider,
   useControls,
@@ -9,19 +8,15 @@ import {
   withTheatre,
 } from "../lib/main";
 import theatreState from "./framer-motion-theatre.theatre-project-state.json";
-
-let maybeStudio: IStudio | undefined = undefined;
-
-// Comment out these lines to remove studio from the bundle
-maybeStudio = studio;
-studio.initialize();
+import studio from "@theatre/studio";
 
 const project = getProject("framer-motion-theatre", { state: theatreState });
+studio.initialize();
 
 function App() {
   return (
     // Wrap your components in TheatreProvider, passing the project and optionally, studio if you want automatic visual selection tools.
-    <TheatreProvider project={project} studio={maybeStudio}>
+    <TheatreProvider project={project} studio={studio}>
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
         <Box animationId="Box 1" color="#E493B3" />

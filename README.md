@@ -34,18 +34,15 @@ yarn add framer-motion-theatre framer-motion @theatre/core @theatre/studio
 The following example demonstrates how to use Framer Motion Theatre. A working version can be found in the `src` directory.
 
 ```tsx
-let maybeStudio: IStudio | undefined = undefined;
-
-// Comment out these lines to remove studio from the bundle
-maybeStudio = studio;
-studio.initialize();
-
 const project = getProject("framer-motion-theatre", { state: theatreState });
 
 function App() {
   return (
-    // Wrap your components in TheatreProvider, passing the project and optionally, studio if you want automatic visual selection tools.
-    <TheatreProvider project={project} studio={maybeStudio}>
+    // Wrap your components in TheatreProvider, passing the project.
+    // Optionally, pass in studio, or 'auto' if you want it set up automatically in development
+    // Caveat: 'auto' relies on your bundler being smart enough to tree-shake,
+    // check the console when running the production bundle.
+    <TheatreProvider project={project} studio="auto">
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
         <Box animationId="Box 1" color="#E493B3" />
@@ -114,10 +111,12 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 
 ### **`TheatreProvider`**
 
-Wrap your app in `TheatreProvider`, passing it your Theatre.js project and optionally, studio if you want automatic visual selection tools.
+Wrap your app in `TheatreProvider`, passing it your Theatre.js project.
+Optionally, pass in studio, or `'auto'` if you want it set up automatically in development.
+Caveat: `'auto'` relies on your bundler being smart enough to tree-shake, check the console when running the production bundle.
 
 ```tsx
-<TheatreProvider project={project} studio={studio}>
+<TheatreProvider project={project} studio="auto">
   <App />
 </TheatreProvider>
 ```
@@ -152,4 +151,18 @@ Returns the controls associated with this animation instance. Learn more about T
 const controls = useControls();
 
 controls.play();
+```
+
+### **`useTheatre`**
+
+Returns the project and the studio instance associated with the component.
+
+```tsx
+const { project, studio } = useTheatre();
+
+useEffect(() => {
+  project.ready.then(() => {
+    // ...
+  });
+}, [project]);
 ```
