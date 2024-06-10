@@ -16,7 +16,6 @@ import {
 } from "@theatre/core";
 import { MotionValue, cancelFrame, frame, motionValue } from "framer-motion";
 import type { IStudio } from "@theatre/studio";
-import { createRoot } from "react-dom/client";
 
 type GizmoTheme = {
   normalColor: string;
@@ -135,10 +134,7 @@ export function useSheetObject<
   const [selectionTarget, setSelectionTarget] = useState<HTMLElement | null>(
     null
   );
-  const [gizmoRoot, setGizmoRoot] = useState<{
-    root: ReturnType<typeof createRoot>;
-    domElement: HTMLElement;
-  } | null>();
+  const [gizmoRoot, setGizmoRoot] = useState<HTMLElement | null>();
   const [isGizmoActive, setIsGizmoActive] = useState(false);
 
   const [object, setObject] = useState(() =>
@@ -231,13 +227,11 @@ export function useSheetObject<
       return;
     }
 
-    const gizmoDiv = document.createElement("div");
-    const gizmoRoot = createRoot(gizmoDiv);
-    setGizmoRoot({ root: gizmoRoot, domElement: gizmoDiv });
+    const gizmoRoot = document.createElement("div");
+    setGizmoRoot(gizmoRoot);
 
     return () => {
-      gizmoRoot.unmount();
-      gizmoDiv.remove();
+      gizmoRoot.remove();
       setGizmoRoot(null);
     };
   }, [selectionTarget, studio]);
@@ -247,15 +241,8 @@ export function useSheetObject<
       return;
     }
 
-    gizmoRoot.root.render(
-      <Gizmo
-        selectFn={selectFn}
-        isSelected={isSelected}
-        isHovered={isHovered}
-        theme={gizmoTheme}
-      />
-    );
-  }, [gizmoRoot, gizmoTheme, isHovered, isSelected, selectFn, selectionTarget]);
+    updateGizmoStyles(gizmoRoot, { isHovered, isSelected, theme: gizmoTheme });
+  }, [gizmoRoot, gizmoTheme, isHovered, isSelected, selectionTarget]);
 
   useEffect(() => {
     if (!studio) {
@@ -288,7 +275,7 @@ export function useSheetObject<
       return;
     }
 
-    selectionTarget.appendChild(gizmoRoot.domElement);
+    selectionTarget.appendChild(gizmoRoot);
 
     const oldPosition = selectionTarget.style.position;
 
@@ -298,7 +285,7 @@ export function useSheetObject<
 
     return () => {
       try {
-        selectionTarget.removeChild(gizmoRoot.domElement);
+        selectionTarget.removeChild(gizmoRoot);
       } catch (e) {
         // the gizmo root may have already been removed
       }
@@ -353,33 +340,29 @@ export function useControls() {
   return sheet.sequence;
 }
 
-function Gizmo({
-  selectFn,
-  isSelected,
-  isHovered,
-  theme,
-}: {
-  selectFn: () => void;
-  isSelected: boolean;
-  isHovered: boolean;
-  theme: GizmoTheme;
-}) {
+function updateGizmoStyles(
+  element: HTMLElement,
+  {
+    isSelected,
+    isHovered,
+    theme,
+  }: {
+    isSelected: boolean;
+    isHovered: boolean;
+    theme: GizmoTheme;
+  }
+) {
   const color =
     isSelected || isHovered ? theme.selectedColor : theme.normalColor;
-  return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        borderWidth: theme.width,
-        borderStyle: isSelected ? "solid" : "dashed",
-        borderColor: color,
-        backgroundColor: `rgb(from ${color} r g b / ${theme.fillOpacity})`,
-        boxSizing: "border-box",
-        zIndex: 1000,
-      }}
-      onClick={selectFn}
-    />
-  );
+  Object.assign(element.style, {
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "none",
+    borderWidth: theme.width,
+    borderStyle: isSelected ? "solid" : "dashed",
+    borderColor: color,
+    backgroundColor: `rgb(from ${color} r g b / ${theme.fillOpacity})`,
+    boxSizing: "border-box",
+    zIndex: 1000,
+  });
 }
