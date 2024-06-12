@@ -15,7 +15,7 @@ import {
   createRafDriver,
 } from "@theatre/core";
 import { MotionValue, cancelFrame, frame, motionValue } from "framer-motion";
-import studio, { IStudio } from "@theatre/studio";
+import { IStudio } from "@theatre/studio";
 
 type GizmoTheme = {
   normalColor: string;
@@ -75,8 +75,8 @@ export const TheatreProvider = ({
     // @ts-ignore
     if (process.env.NODE_ENV === "development") {
       if (userStudio === "auto") {
-        studio.initialize();
-        return studio;
+        // studio.initialize();
+        // return studio;
       }
     }
   }, [userStudio]);
