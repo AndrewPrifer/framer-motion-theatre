@@ -14,7 +14,7 @@ While Theatre.js' concepts can be a bit hard to wrap your head around, its termi
 - Sheet instances -> React component instances
 - Objects -> Framer Motion motion values
 
-By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple declarative API that is very easy to read and write.
+By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple declarative API that is very easy to read and write, and which allows us to build powerful tools on top.
 
 ## Features
 
