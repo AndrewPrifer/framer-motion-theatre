@@ -227,6 +227,7 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
       onClick={() => {
         if (studio) {
           studio.setSelection([gizmoTarget.sheetObject]);
+          studio.ui.restore();
         }
       }}
     />
