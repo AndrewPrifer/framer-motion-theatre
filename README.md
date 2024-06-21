@@ -4,7 +4,7 @@ Seamlessly integrate Theatre.js with Framer Motion and React and get the best of
 Animate Framer Motion's motion values using Theatre.js, with all the complex stuff like sheets, objects, animation instancing and wiring taken care of.
 Automatically get visual selection and editing tools with 1 line of code.
 
-https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/44c77be8-c6de-4545-bcf7-75fe49164715
+https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/532c42b2-596f-45ab-8460-1032f5c2a3a2
 
 ## Why?
 
@@ -23,6 +23,8 @@ By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple
 - Automatically creates and manages sheet objects and sheet instances.
 - Hold down the `Alt` key to display selectable objects in dev mode.
 - Add visual editing with 1 line of code.
+
+https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/44c77be8-c6de-4545-bcf7-75fe49164715
 
 ## Installation
 
