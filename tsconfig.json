@@ -18,7 +18,7 @@
     "strict": true,
     // Results in "'React' is declared but its value is never read" error
     // "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src, lib"],
