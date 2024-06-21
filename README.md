@@ -8,7 +8,7 @@ https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/08f9c8e9-c8
 
 ## Why?
 
-While Theatre.js' concepts can be a bit hard to wrap your head around, its terminology maps surprisingly well to React and Framer Motion concepts.
+While Theatre.js' concepts can be a bit hard to wrap your head around, its terminology maps very well to React and Framer Motion concepts.
 
 - Sheets -> React components
 - Sheet instances -> React component instances
