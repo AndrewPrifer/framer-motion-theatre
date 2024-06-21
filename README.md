@@ -2,7 +2,7 @@
 
 Seamlessly integrate Theatre.js with Framer Motion and React and get the best of Theatre.js' editing tools and Framer Motion's declarative API.
 Animate Framer Motion's motion values using Theatre.js, with all the complex stuff like sheets, objects, animation instancing and wiring taken care of.
-Plus you automatically get visual selection tools when in dev mode.
+Automatically get visual selection and editing tools with 1 line of code.
 
 https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/92b71b1d-0877-4c43-89db-f8761b9f689e
 
@@ -22,6 +22,7 @@ By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple
 - Animate Framer Motion's motion values using Theatre.js.
 - Automatically creates and manages sheet objects and sheet instances.
 - Hold down the `Alt` key to display selectable objects in dev mode.
+- Add visual editing with 1 line of code.
 
 ## Installation
 
@@ -109,7 +110,7 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 
 ## API
 
-### **`TheatreProvider`**
+### **`<TheatreProvider>`**
 
 Wrap your app in `TheatreProvider`, passing it your Theatre.js project.
 Optionally, pass in studio, or `'auto'` if you want it set up automatically in development.
@@ -121,7 +122,7 @@ Caveat: `'auto'` relies on your bundler being smart enough to tree-shake, check 
 </TheatreProvider>
 ```
 
-### **`withTheatre`**
+### **`withTheatre()`**
 
 Wrap your components in `withTheatre` to gain access to Framer Motion Theatre hooks and automatically set up sheets and objects for that component.
 
@@ -131,7 +132,7 @@ const MyComponent = withTheatre("MyComponent", () => {
 });
 ```
 
-### **`useSheetObject`**
+### **`useSheetObject()`**
 
 Animate motion values using Theatre.js. Returns an object of motion values you can plug into `motion.*` elements. Accepts an object of Theatre.js' [prop types](https://www.theatrejs.com/docs/latest/api/core#prop-types). Additionally, it returns an object with a `$studio` property that allows you to enable selection tools for this element.
 
@@ -154,7 +155,74 @@ return (
 );
 ```
 
-### **`useControls`**
+### **`$studio`**
+
+The `$studio` object returned by `useSheetObject` allows you to enable selection end editing tools for this element. And has the following properties:
+
+#### **`$studio.createGizmo()`**
+
+Creates a gizmo for this element. Hold down the `Alt` key to display selectable objects.
+
+`createGizmo()` accepts an object of options:
+
+- **`zIndex`**: The z-index of the gizmo. Defaults to `0`. Gizmos are displayed on top of the page independently of your elements. The `zIndex` option lets you define the stacking order of gizmos. Higher values will be on top of lower values.
+- **`ignoreComputedZIndex`**: By default, the z-index assigned to gizmos will take into account the computed z-index of their corresponding element, which is what you want most of the time. In that case, the final z-index of the gizmo will be the value of the `zIndex` option + the computed z-index of the element. If you want to ignore the computed z-index and only use the `zIndex` option, set this to `true`.
+- **`translate.x`**: Accepts a `MotionValue` returned by `useSheetObject`. It will set the corresponding value when the gizmo is moved on the x axis.
+- **`translate.y`**: Accepts a `MotionValue` returned by `useSheetObject`. It will set the corresponding value when the gizmo is moved on the y axis.
+- **`translate.strength`**: A factor to multiply the translation by. Defaults to `1`.
+
+```tsx
+const div = useSheetObject("div", {
+  width: 100,
+  height: 100,
+});
+
+return (
+  <motion.div
+    ref={div.$studio.createGizmo({
+      translate: {
+        x: div.width,
+        y: div.height,
+      },
+    })}
+    style={{
+      ...div,
+    }}
+  >
+    {/* ... */}
+  </motion.div>
+);
+```
+
+#### **`$studio.isSelected`**
+
+A boolean that indicates whether the object is currently selected.
+
+```tsx
+const div = useSheetObject("div", {
+  width: 100,
+  height: 100,
+});
+
+if (div.$studio.isSelected) {
+  // ...
+}
+```
+
+#### **`$studio.select()`**
+
+Allows you to select the object programmatically.
+
+```tsx
+const div = useSheetObject("div", {
+  width: 100,
+  height: 100,
+});
+
+div.$studio.select();
+```
+
+### **`useControls()`**
 
 Returns the controls associated with this animation instance. Learn more about Theatre.js' animation controls [here](https://www.theatrejs.com/docs/latest/api/core#sequence).
 
@@ -164,7 +232,7 @@ const controls = useControls();
 controls.play();
 ```
 
-### **`useTheatre`**
+### **`useTheatre()`**
 
 Returns the project and the studio instance associated with the component.
 
