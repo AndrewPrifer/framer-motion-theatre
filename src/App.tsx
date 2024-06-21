@@ -51,7 +51,7 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
   return (
     <motion.div
       // Besides the motion values, useSheetObject also returns a function to enable selection tools for this element.
-      ref={div.$studio.setSelectionTarget}
+      ref={div.$studio.createGizmo()}
       onClick={() => {
         controls.position = 0;
         controls.play({ rate: 0.8 });
@@ -67,7 +67,7 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
         alignItems: "center",
       }}
     >
-      <motion.span ref={text.$studio.setSelectionTarget} style={{ ...text }}>
+      <motion.span ref={text.$studio.createGizmo()} style={{ ...text }}>
         {/* You can also keyframe text by directly passing it as children. */}
         {text.content}
       </motion.span>
