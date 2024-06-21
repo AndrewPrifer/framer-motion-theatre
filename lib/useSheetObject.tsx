@@ -21,9 +21,9 @@ type MotionValueObjectWithStudio<Props extends UnknownShorthandCompoundProps> =
     $studio: {
       isSelected: boolean;
       select: () => void;
-      createGizmo: (options?: {
-        zIndex?: number;
-      }) => (element: HTMLElement | null) => void;
+      createGizmo: (
+        options?: GizmoOptions
+      ) => (element: HTMLElement | null) => void;
     };
   };
 
