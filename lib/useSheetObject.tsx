@@ -8,6 +8,7 @@ import { MotionValue, motionValue } from "framer-motion";
 import { theatreContext } from "./theatreContext";
 import { framerMotionRafDriver } from "./framerMotionRafDriver";
 import { theatreComponentContext } from "./theatreComponentContext";
+import { GizmoOptions } from "./types";
 
 type MotionValueObject<Props extends UnknownShorthandCompoundProps> = {
   [K in keyof ISheetObject<Props>["value"]]: MotionValue<
@@ -20,7 +21,9 @@ type MotionValueObjectWithStudio<Props extends UnknownShorthandCompoundProps> =
     $studio: {
       isSelected: boolean;
       select: () => void;
-      createGizmo: () => (element: HTMLElement | null) => void;
+      createGizmo: (options?: {
+        zIndex?: number;
+      }) => (element: HTMLElement | null) => void;
     };
   };
 
@@ -30,9 +33,10 @@ export function useSheetObject<
   const { sheet } = useContext(theatreComponentContext);
   const { studio, selectedObject, registerGizmoTarget } =
     useContext(theatreContext);
-  const [selectionTarget, setSelectionTarget] = useState<HTMLElement | null>(
-    null
-  );
+  const [selectionTarget, setSelectionTarget] = useState<{
+    element: HTMLElement;
+    options: GizmoOptions;
+  } | null>(null);
 
   const [object, setObject] = useState(() =>
     sheet.object(objectId, initial, { reconfigure: true })
@@ -51,7 +55,7 @@ export function useSheetObject<
   );
 
   const motionValuesWithStudio = useMemo(
-    () => ({
+    (): MotionValueObjectWithStudio<Props> => ({
       ...motionValues,
       $studio: {
         isSelected: selectedObject === object,
@@ -61,7 +65,14 @@ export function useSheetObject<
           }
           studio.setSelection([object]);
         },
-        createGizmo: () => setSelectionTarget,
+        createGizmo:
+          (options = {}) =>
+          (element: HTMLElement | null) => {
+            if (!element) {
+              return;
+            }
+            setSelectionTarget({ element, options });
+          },
       },
     }),
     [motionValues, object, selectedObject, studio]
@@ -69,7 +80,13 @@ export function useSheetObject<
 
   useEffect(() => {
     if (selectionTarget) {
-      registerGizmoTarget(object, selectionTarget);
+      const deregister = registerGizmoTarget({
+        sheetObject: object,
+        target: selectionTarget.element,
+        options: selectionTarget.options,
+      });
+
+      return deregister;
     }
   }, [object, registerGizmoTarget, selectionTarget]);
 

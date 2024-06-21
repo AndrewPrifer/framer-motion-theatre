@@ -15,11 +15,9 @@ import {
 } from "framer-motion";
 import { IStudio } from "@theatre/studio";
 import { theatreContext } from "./theatreContext";
-import { GizmoTheme } from "./types";
+import { GizmoTarget, GizmoTheme } from "./types";
 import { framerMotionRafDriver } from "./framerMotionRafDriver";
 import { motion } from "framer-motion";
-
-type GizmoTarget = { sheetObject: ISheetObject; target: HTMLElement };
 
 function keyFromAddress(object: ISheetObject): string {
   let key = "";
@@ -45,7 +43,7 @@ export const TheatreProvider = ({
   const defaultGizmoTheme = {
     normalColor: "rgb(60, 140, 219)",
     selectedColor: "rgb(31, 121, 210)",
-    fillOpacity: 0,
+    fillOpacity: 0.2,
     width: 3,
   };
 
@@ -81,16 +79,13 @@ export const TheatreProvider = ({
   );
 
   const registerGizmoTarget = useCallback<
-    (sheetObject: ISheetObject, target: HTMLElement) => () => void
-  >((sheetObject, target) => {
-    setGizmoTargets((gizmoTargets) => [
-      ...gizmoTargets,
-      { sheetObject, target },
-    ]);
+    (gizmoTarget: GizmoTarget) => () => void
+  >((gizmoTarget) => {
+    setGizmoTargets((gizmoTargets) => [...gizmoTargets, gizmoTarget]);
 
     return () => {
       setGizmoTargets((gizmoTargets) =>
-        gizmoTargets.filter((e) => e.sheetObject !== sheetObject)
+        gizmoTargets.filter((e) => e !== gizmoTarget)
       );
     };
   }, []);
@@ -155,7 +150,7 @@ export const TheatreProvider = ({
             position: "fixed",
             top: 0,
             left: 0,
-            zIndex: 1000,
+            zIndex: 999999999,
           }}
         >
           {gizmoTargets.map((gizmoTarget) => (
@@ -182,9 +177,10 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
   const isSelected = selectedObject === gizmoTarget.sheetObject;
 
   const target = gizmoTarget.target;
+  const options = gizmoTarget.options;
 
-  const color =
-    isSelected || isHovered ? theme.selectedColor : theme.normalColor;
+  const color = isSelected ? theme.selectedColor : theme.normalColor;
+  const zIndex = useMotionValue(options.zIndex ?? 0);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -193,6 +189,12 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
 
   useAnimationFrame(() => {
     const bounds = target.getBoundingClientRect();
+
+    if (!options.ignoreComputedZIndex) {
+      zIndex.set(
+        (options.zIndex ?? 0) + Number(getComputedStyle(target).zIndex)
+      );
+    }
 
     x.set(bounds.x);
     y.set(bounds.y);
@@ -209,13 +211,16 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
         borderWidth: theme.width,
         borderStyle: isSelected ? "solid" : "dashed",
         borderColor: color,
-        backgroundColor: `rgb(from ${color} r g b / ${theme.fillOpacity})`,
+        backgroundColor: `rgb(from ${color} r g b / ${
+          isHovered && !isSelected ? theme.fillOpacity : 0
+        })`,
         boxSizing: "border-box",
         contain: "strict",
         x,
         y,
         width,
         height,
+        zIndex,
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
