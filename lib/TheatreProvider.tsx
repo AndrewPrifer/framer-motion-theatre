@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { IProject, ISheetObject } from "@theatre/core";
@@ -13,7 +14,7 @@ import {
   useAnimationFrame,
   useMotionValue,
 } from "framer-motion";
-import { IStudio } from "@theatre/studio";
+import { IScrub, IStudio } from "@theatre/studio";
 import { theatreContext } from "./theatreContext";
 import { GizmoTarget, GizmoTheme } from "./types";
 import { framerMotionRafDriver } from "./framerMotionRafDriver";
@@ -173,11 +174,10 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
     selectedObject,
   } = useContext(theatreContext);
 
-  const [isHovered, setIsHovered] = useState(false);
-  const isSelected = selectedObject === gizmoTarget.sheetObject;
+  const { target, options, axesMap, sheetObject } = gizmoTarget;
 
-  const target = gizmoTarget.target;
-  const options = gizmoTarget.options;
+  const [isHovered, setIsHovered] = useState(false);
+  const isSelected = selectedObject === sheetObject;
 
   const color = isSelected ? theme.selectedColor : theme.normalColor;
   const zIndex = useMotionValue(options.zIndex ?? 0);
@@ -202,6 +202,26 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
     height.set(bounds.height);
   });
 
+  const scrubRef = useRef<IScrub | null>(null);
+  const initialRef = useRef(sheetObject.value);
+  const initialStylesRef = useRef({
+    userSelect: document.body.style.userSelect,
+    cursor: document.body.style.cursor,
+  });
+
+  useEffect(() => {
+    return () => {
+      if (scrubRef.current) {
+        scrubRef.current.discard();
+      }
+
+      document.body.style.userSelect = initialStylesRef.current.userSelect;
+      document.body.style.webkitUserSelect =
+        initialStylesRef.current.userSelect;
+      document.body.style.cursor = initialStylesRef.current.cursor;
+    };
+  }, []);
+
   return (
     <motion.div
       style={{
@@ -216,6 +236,9 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
         })`,
         boxSizing: "border-box",
         contain: "strict",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        touchAction: "none",
         x,
         y,
         width,
@@ -229,6 +252,66 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
           studio.setSelection([gizmoTarget.sheetObject]);
           studio.ui.restore();
         }
+      }}
+      onPanStart={() => {
+        if (!studio) {
+          return;
+        }
+
+        studio.setSelection([gizmoTarget.sheetObject]);
+
+        if (scrubRef.current) {
+          scrubRef.current.discard();
+        }
+
+        scrubRef.current = studio.scrub();
+        initialRef.current = sheetObject.value;
+
+        initialStylesRef.current = {
+          userSelect: document.body.style.userSelect,
+          cursor: document.body.style.cursor,
+        };
+
+        document.body.style.userSelect = "none";
+        document.body.style.webkitUserSelect = "none";
+        document.body.style.cursor = "move";
+      }}
+      onPan={(event, info) => {
+        if (!scrubRef.current) {
+          return;
+        }
+
+        const xKey = axesMap.translate.x;
+        const yKey = axesMap.translate.y;
+
+        scrubRef.current.capture(({ set }) => {
+          if (xKey) {
+            set(
+              sheetObject.props[xKey],
+              initialRef.current[xKey] +
+                info.offset.x * (options.translate?.strength ?? 1)
+            );
+          }
+
+          if (yKey) {
+            set(
+              sheetObject.props[yKey],
+              initialRef.current[yKey] +
+                info.offset.y * (options.translate?.strength ?? 1)
+            );
+          }
+        });
+      }}
+      onPanEnd={() => {
+        if (scrubRef.current) {
+          scrubRef.current.commit();
+          scrubRef.current = null;
+        }
+
+        document.body.style.userSelect = initialStylesRef.current.userSelect;
+        document.body.style.webkitUserSelect =
+          initialStylesRef.current.userSelect;
+        document.body.style.cursor = initialStylesRef.current.cursor;
       }}
     />
   );

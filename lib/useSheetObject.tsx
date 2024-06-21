@@ -80,15 +80,28 @@ export function useSheetObject<
 
   useEffect(() => {
     if (selectionTarget) {
+      const options = selectionTarget.options;
       const deregister = registerGizmoTarget({
         sheetObject: object,
         target: selectionTarget.element,
-        options: selectionTarget.options,
+        options,
+        axesMap: {
+          translate: {
+            x:
+              Object.entries(motionValues).find(
+                (e) => e[1] === (options.translate?.x as MotionValue)
+              )?.[0] ?? null,
+            y:
+              Object.entries(motionValues).find(
+                (e) => e[1] === (options.translate?.y as MotionValue)
+              )?.[0] ?? null,
+          },
+        },
       });
 
       return deregister;
     }
-  }, [object, registerGizmoTarget, selectionTarget]);
+  }, [motionValues, object, registerGizmoTarget, selectionTarget]);
 
   useEffect(() => {
     setMotionValues((prev) => {
