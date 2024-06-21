@@ -247,8 +247,8 @@ function Gizmo({ gizmoTarget }: { gizmoTarget: GizmoTarget }) {
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      onClick={() => {
-        if (studio) {
+      onTap={(_, info) => {
+        if (studio && !scrubRef.current) {
           studio.setSelection([gizmoTarget.sheetObject]);
           studio.ui.restore();
         }
