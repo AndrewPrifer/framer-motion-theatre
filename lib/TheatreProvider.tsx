@@ -6,11 +6,9 @@ import React, {
   useState,
 } from "react";
 import { IProject, ISheetObject } from "@theatre/core";
-import { cancelFrame, frame } from "framer-motion";
 import { IStudio } from "@theatre/studio";
 import { theatreContext } from "./theatreContext";
 import { GizmoTarget, GizmoTheme } from "./types";
-import { framerMotionRafDriver } from "./framerMotionRafDriver";
 import { Gizmo } from "./Gizmo";
 
 function keyFromAddress(object: ISheetObject): string {
@@ -40,16 +38,6 @@ export const TheatreProvider = ({
     fillOpacity: 0.2,
     width: 3,
   };
-
-  useEffect(() => {
-    const update: Parameters<typeof frame.update>[0] = ({ timestamp }) => {
-      framerMotionRafDriver.tick(timestamp);
-    };
-
-    frame.update(update, true);
-
-    return () => cancelFrame(update);
-  }, []);
 
   const actualStudio = useMemo(() => {
     if (userStudio !== "auto" && userStudio) {

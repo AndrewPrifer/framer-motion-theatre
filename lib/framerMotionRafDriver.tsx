@@ -1,9 +1,20 @@
 import { createRafDriver } from "@theatre/core";
+import { cancelFrame, frame } from "framer-motion";
 
-// Theatre provides a way to start and stop the driver on-demand through the start/stop parameters,
-// however it makes it impossible to dispose of the rafDriver because the update loop is now managed by Theatre and we have no way of telling it to stop.
-// It'll also retain the rafDriver object itself forever, causing a memory leak.
-// So we are not using it for now.
+const update: Parameters<typeof frame.update>[0] = ({ timestamp }) => {
+  framerMotionRafDriver.tick(timestamp);
+};
+
+const start = (): void => {
+  frame.update(update, true);
+};
+
+const stop = (): void => {
+  cancelFrame(update);
+};
+
 export const framerMotionRafDriver = createRafDriver({
   name: "framer-motion-theatre",
+  start,
+  stop,
 });
