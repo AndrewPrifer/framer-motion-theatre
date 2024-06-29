@@ -48,8 +48,8 @@ function App() {
     <TheatreProvider project={project} studio="auto">
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
-        <Box animationId="Box 1" color="#E493B3" />
-        <Box animationId="Box 2" color="#EEA5A6" />
+        <Box instanceId="Box 1" color="#E493B3" />
+        <Box instanceId="Box 2" color="#EEA5A6" />
       </div>
     </TheatreProvider>
   );
@@ -126,12 +126,15 @@ Caveat: `'auto'` relies on your bundler being smart enough to tree-shake, check 
 
 ### **`withTheatre()`**
 
-Wrap your components in `withTheatre` to gain access to Framer Motion Theatre hooks and automatically set up sheets and objects for that component.
+Wrap your components in `withTheatre` to gain access to Framer Motion Theatre hooks and automatically set up sheets and objects for that component. The returned component has an extra mandatory prop `instanceId` that must be unique for each instance of the component.
 
 ```tsx
 const MyComponent = withTheatre("MyComponent", () => {
   // Your component here
 });
+
+<MyComponent instanceId="MyComponent 1" />;
+<MyComponent instanceId="MyComponent 2" />;
 ```
 
 ### **`useSheetObject()`**

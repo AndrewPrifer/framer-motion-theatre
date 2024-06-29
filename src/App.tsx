@@ -19,8 +19,8 @@ function App() {
     <TheatreProvider project={project} studio={studio}>
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
-        <Box animationId="Box 1" color="#E493B3" />
-        <Box animationId="Box 2" color="#EEA5A6" />
+        <Box instanceId="Box 1" color="#E493B3" />
+        <Box instanceId="Box 2" color="#EEA5A6" />
       </div>
     </TheatreProvider>
   );
