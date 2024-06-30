@@ -2,7 +2,7 @@
 
 Seamlessly integrate Theatre.js with Framer Motion and React and get the best of Theatre.js' editing tools and Framer Motion's declarative API.
 Animate Framer Motion's motion values using Theatre.js, with all the complex stuff like sheets, objects, animation instancing and wiring taken care of.
-Automatically get visual selection and editing tools with 1 line of code.
+Automatically get visual editing tools with 1 line of code.
 
 https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/08f9c8e9-c86b-417b-b205-16d9292b63d2
 
@@ -22,7 +22,7 @@ By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple
 - Animate Framer Motion's motion values using Theatre.js.
 - Automatically creates and manages sheet objects and sheet instances.
 - Hold down the `Alt` key to display selectable objects in dev mode.
-- Add visual editing with 1 line of code.
+- Get visual editing tools with 1 line of code.
 
 https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/44c77be8-c6de-4545-bcf7-75fe49164715
 
@@ -43,8 +43,6 @@ function App() {
   return (
     // Wrap your components in TheatreProvider, passing the project.
     // Optionally, pass in studio, or 'auto' if you want it set up automatically in development
-    // Caveat: 'auto' relies on your bundler being smart enough to tree-shake,
-    // check the console when running the production bundle.
     <TheatreProvider project={project} studio="auto">
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
@@ -62,11 +60,6 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
     width: 100,
     height: 100,
     scale: types.number(1, { nudgeMultiplier: 0.01 }),
-    borderRadius: types.number(0, {
-      nudgeMultiplier: 0.1,
-      range: [0, Infinity],
-    }),
-    skewX: 0,
   });
 
   const text = useSheetObject("text", {
@@ -79,21 +72,14 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 
   return (
     <motion.div
-      // Besides the motion values, useSheetObject also returns a function to enable selection tools for this element.
+      // Besides the motion values, useSheetObject also returns a function to enable editing tools for this element.
       ref={div.$studio.createGizmo()}
       onClick={() => {
         controls.position = 0;
         controls.play({ rate: 0.8 });
       }}
       style={{
-        // Being an object of motion values, you can even directly destructure it onto the style prop.
         ...div,
-        backgroundColor: color,
-        color: "white",
-        fontWeight: "bold",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
       <motion.span ref={text.$studio.createGizmo()} style={{ ...text }}>
@@ -139,7 +125,7 @@ const MyComponent = withTheatre("MyComponent", () => {
 
 ### **`useSheetObject()`**
 
-Animate motion values using Theatre.js. Returns an object of motion values you can plug into `motion.*` elements. Accepts an object of Theatre.js' [prop types](https://www.theatrejs.com/docs/latest/api/core#prop-types). Additionally, it returns an object with a `$studio` property that allows you to enable selection tools for this element.
+Animate motion values using Theatre.js. Returns an object of motion values you can plug into `motion.*` elements. Accepts an object of Theatre.js' [prop types](https://www.theatrejs.com/docs/latest/api/core#prop-types). Additionally, it returns an object with a `$studio` property that allows you to enable editing tools for this element.
 
 ```tsx
 const div = useSheetObject("div", {
@@ -162,7 +148,7 @@ return (
 
 ### **`$studio`**
 
-The `$studio` object returned by `useSheetObject` allows you to enable selection end editing tools for this element. And has the following properties:
+The `$studio` object returned by `useSheetObject` allows you to enable editing end editing tools for this element. And has the following properties:
 
 #### **`$studio.createGizmo()`**
 

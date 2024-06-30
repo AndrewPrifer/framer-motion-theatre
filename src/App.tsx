@@ -6,17 +6,15 @@ import {
   useControls,
   useSheetObject,
   withTheatre,
-} from "../lib/main";
+} from "../lib/dev";
 import theatreState from "./framer-motion-theatre.theatre-project-state.json";
-import studio from "@theatre/studio";
 
 const project = getProject("framer-motion-theatre", { state: theatreState });
-studio.initialize();
 
 function App() {
   return (
     // Wrap your components in TheatreProvider, passing the project and optionally, studio if you want automatic visual selection tools.
-    <TheatreProvider project={project} studio={studio}>
+    <TheatreProvider project={project} studio="auto">
       <div className="container">
         {/* Pass your components a unique animation ID besides the regular props. */}
         <Box instanceId="Box 1" color="#E493B3" />

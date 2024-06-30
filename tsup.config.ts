@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["lib/main.tsx"],
+  entry: ["lib/main.ts", "lib/dev.ts"],
   sourcemap: true,
   clean: true,
   dts: true,

@@ -1,10 +1,4 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { IProject, ISheetObject } from "@theatre/core";
 import { IStudio } from "@theatre/studio";
 import { theatreContext } from "./theatreContext";
@@ -21,14 +15,14 @@ function keyFromAddress(object: ISheetObject): string {
   return key;
 }
 
-export const TheatreProvider = ({
+export const InnerTheatreProvider = ({
   project,
-  studio: userStudio,
+  studio,
   children,
   theme,
 }: {
   project: IProject;
-  studio?: IStudio | "auto" | false;
+  studio?: IStudio;
   children: ReactNode;
   theme?: GizmoTheme;
 }) => {
@@ -38,21 +32,6 @@ export const TheatreProvider = ({
     fillOpacity: 0.2,
     width: 3,
   };
-
-  const actualStudio = useMemo(() => {
-    if (userStudio !== "auto" && userStudio) {
-      return userStudio;
-    }
-
-    // Vite/Rollup is smart enough to tree-shake this, but not `if (userStudio === "auto" && process.env.NODE_ENV === "development") { ... }`
-    // @ts-ignore
-    if (process.env.NODE_ENV === "development") {
-      if (userStudio === "auto") {
-        // studio.initialize();
-        // return studio;
-      }
-    }
-  }, [userStudio]);
 
   const [gizmoTargets, setGizmoTargets] = useState<GizmoTarget[]>([]);
   const [isGizmoActive, setIsGizmoActive] = useState(false);
@@ -73,25 +52,25 @@ export const TheatreProvider = ({
   }, []);
 
   useEffect(() => {
-    if (!actualStudio) {
+    if (!studio) {
       setSelectedObject(null);
     } else {
       setSelectedObject(
-        (actualStudio.selection.filter(
+        (studio.selection.filter(
           (e) => e.type === "Theatre_SheetObject_PublicAPI"
         )[0] as ISheetObject | undefined) ?? null
       );
-      actualStudio.onSelectionChange((selection) => {
+      studio.onSelectionChange((selection) => {
         const object = selection.filter(
           (e) => e.type === "Theatre_SheetObject_PublicAPI"
         )[0] as ISheetObject | undefined;
         setSelectedObject(object ?? null);
       });
     }
-  }, [actualStudio]);
+  }, [studio]);
 
   useEffect(() => {
-    if (!actualStudio) {
+    if (!studio) {
       return;
     }
 
@@ -114,13 +93,13 @@ export const TheatreProvider = ({
       document.removeEventListener("keydown", keyDown);
       document.removeEventListener("keyup", keyUp);
     };
-  }, [actualStudio]);
+  }, [studio]);
 
   return (
     <theatreContext.Provider
       value={{
         project,
-        studio: actualStudio,
+        studio: studio,
         gizmoTheme: theme ?? defaultGizmoTheme,
         registerGizmoTarget,
         selectedObject,

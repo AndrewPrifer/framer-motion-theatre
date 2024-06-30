@@ -25,6 +25,11 @@
   "types": "./dist/main.d.ts",
   "exports": {
     ".": {
+      "development": {
+        "types": "./dist/main.d.ts",
+        "import": "./dist/dev.js",
+        "require": "./dist/dev.cjs"
+      },
       "types": "./dist/main.d.ts",
       "import": "./dist/main.js",
       "require": "./dist/main.cjs"
