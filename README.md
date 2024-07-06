@@ -53,7 +53,7 @@ function App() {
   );
 }
 
-// All components using framer-motion-theatre hooks must be directly wrapped in withTheatre. Other than that, they are regular React components.
+// All components using framer-motion-theatre hooks must be directly wrapped in withTheatre.
 const Box = withTheatre("Box", ({ color }: { color: string }) => {
   // useSheetObject returns an object of motion values you can plug into motion.* elements.
   const div = useSheetObject("div", {
