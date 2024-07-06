@@ -8,7 +8,7 @@ https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/08f9c8e9-c8
 
 ## How does it work?
 
-While Theatre.js provides a framework-agnostic toolset, its concepts map very well to React and Framer Motion.
+While Theatre.js provides a framework-agnostic toolset, its concepts map directly to React and Framer Motion.
 
 - [Sheets](https://www.theatrejs.com/docs/latest/manual/sheets) -> React components
 - [Sheet instances](https://www.theatrejs.com/docs/latest/manual/sheets#instancing-sheets) -> React component instances
