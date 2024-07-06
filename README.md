@@ -6,7 +6,7 @@ Automatically get visual editing tools with 1 line of code.
 
 https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/08f9c8e9-c86b-417b-b205-16d9292b63d2
 
-## Why?
+## How does it work?
 
 While Theatre.js' concepts can be a bit hard to wrap your head around, its terminology maps very well to React and Framer Motion concepts.
 
