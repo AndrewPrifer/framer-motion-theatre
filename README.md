@@ -8,11 +8,11 @@ https://github.com/AndrewPrifer/framer-motion-theatre/assets/2991360/08f9c8e9-c8
 
 ## How does it work?
 
-While Theatre.js' concepts can be a bit hard to wrap your head around, its terminology maps very well to React and Framer Motion concepts.
+While Theatre.js provides a framework-agnostic toolset, its concepts map very well to React and Framer Motion.
 
-- Sheets -> React components
-- Sheet instances -> React component instances
-- Objects -> Framer Motion motion values
+- [Sheets](https://www.theatrejs.com/docs/latest/manual/sheets) -> React components
+- [Sheet instances](https://www.theatrejs.com/docs/latest/manual/sheets#instancing-sheets) -> React component instances
+- [Objects](https://www.theatrejs.com/docs/latest/manual/objects) -> Framer Motion motion values
 
 By enforcing this interpretation, we can wrap Theatre.js' complexity in a simple declarative API that is very easy to read and write, integrates with Framer Motion's `motion` components, and allows us to easily add powerful visual editing tools to our components.
 
