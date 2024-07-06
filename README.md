@@ -72,7 +72,7 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 
   return (
     <motion.div
-      // Besides the motion values, useSheetObject also returns a function to enable editing tools for this element.
+      // useSheetObject also returns a function to enable editing tools for this element.
       ref={div.$studio.createGizmo()}
       onClick={() => {
         controls.position = 0;
