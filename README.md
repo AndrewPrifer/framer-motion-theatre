@@ -67,7 +67,7 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
     y: 0,
   });
 
-  // useControls returns the controls associated with this animation instance.
+  // useControls returns the controls associated with this component instance.
   const controls = useControls();
 
   return (
