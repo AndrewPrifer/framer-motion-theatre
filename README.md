@@ -34,7 +34,7 @@ yarn add framer-motion-theatre framer-motion @theatre/core @theatre/studio
 
 ## Usage
 
-The following example demonstrates how to use Framer Motion Theatre. A working version can be found in the `src` directory.
+The following example demonstrates how to use Framer Motion Theatre. A working version can be found in the `src` directory and run by cloning this repository and running `yarn dev`.
 
 ```tsx
 const project = getProject("framer-motion-theatre", { state: theatreState });
