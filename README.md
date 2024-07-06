@@ -156,8 +156,8 @@ Creates a gizmo for this element. Hold down the `Alt` key to display selectable 
 
 `createGizmo()` accepts an object of options:
 
-- **`translate.x`**: Accepts a `MotionValue` returned by `useSheetObject`. It will set the corresponding value when the gizmo is moved on the x axis.
-- **`translate.y`**: Accepts a `MotionValue` returned by `useSheetObject`. It will set the corresponding value when the gizmo is moved on the y axis.
+- **`translate.x`**: Accepts a `MotionValue` returned by `useSheetObject`. It will edit the value when the gizmo is moved on the x axis.
+- **`translate.y`**: Accepts a `MotionValue` returned by `useSheetObject`. It will edit the value when the gizmo is moved on the y axis.
 - **`translate.strength`**: A factor to multiply the translation by. Defaults to `1`.
 - **`zIndex`**: The z-index of the gizmo. Defaults to `0`. Gizmos are displayed on top of the page independently of your elements. The `zIndex` option lets you define the stacking order of gizmos. Higher values will be on top of lower values.
 - **`ignoreComputedZIndex`**: By default, the z-index assigned to gizmos will take into account the computed z-index of their corresponding element, which is what you want most of the time. In that case, the final z-index of the gizmo will be the value of the `zIndex` option + the computed z-index of the element. If you want to ignore the computed z-index and only use the `zIndex` option, set this to `true`.
