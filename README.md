@@ -148,7 +148,7 @@ return (
 
 ### **`$studio`**
 
-The `$studio` object returned by `useSheetObject` allows you to enable editing end editing tools for this element. And has the following properties:
+The `$studio` object returned by `useSheetObject` allows you to enable editing tools for the object and has the following properties:
 
 #### **`$studio.createGizmo()`**
 
