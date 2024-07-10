@@ -102,7 +102,6 @@ const Box = withTheatre("Box", ({ color }: { color: string }) => {
 
 Wrap your app in `TheatreProvider`, passing it your Theatre.js project.
 Optionally, pass in studio, or `'auto'` if you want it set up automatically in development.
-Caveat: `'auto'` relies on your bundler being smart enough to tree-shake, check the console when running the production bundle.
 
 ```tsx
 <TheatreProvider project={project} studio="auto">
