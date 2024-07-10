@@ -1,5 +1,7 @@
 # Framer Motion 🤝 Theatre
 
+A library for creating animated React components built on Theatre.js and Framer Motion.
+
 Seamlessly integrate Theatre.js with Framer Motion and React and get the best of Theatre.js' animation sequencer and React's declarative API.
 Animate Framer Motion's motion values using Theatre.js, and have all the complexity like sheets, objects, animation instancing and wiring taken care of.
 Automatically get WYSIWYG editing tools with 1 line of code.
