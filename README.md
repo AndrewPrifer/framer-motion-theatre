@@ -37,7 +37,7 @@ yarn add framer-motion-theatre framer-motion @theatre/core @theatre/studio
 The following example demonstrates how to use Framer Motion Theatre. A working version can be found in the `src` directory and run by cloning this repository and running `yarn dev`.
 
 ```tsx
-// Wrap your component in FMT's withTheatre
+// Wrap your component in withTheatre
 const Box = withTheatre("Box", ({ color }: { color: string }) => {
   // Returns an object of motion values you can plug into <motion.*> elements
   const div = useSheetObject("div", {
